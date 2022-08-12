@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
 export type AuthState = {
-  isLoggedIn: boolean
+  isLoggedIn: boolean;
 }
 
 const initialState: AuthState = {

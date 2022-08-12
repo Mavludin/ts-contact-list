@@ -1,30 +1,27 @@
 import { Avatar, Button, List } from 'antd';
-import { ChangeEventHandler, useEffect, useState } from 'react';
-import { CONTACTS_URL } from '../../shared/constants';
+import { useEffect } from 'react';
 import { Typography, Input } from 'antd';
 import './ContactList.css';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import {
+  fetchContacts,
+  selectContactList,
+} from '../../slices/contact/contactSlice';
 
 const { Search } = Input;
 const { Title } = Typography;
 
-type ContactItem = {
-  id: string;
-  name: string;
-  phone: string;
-};
-
 export const ContactList = () => {
-  const [contactList, setContactList] = useState<ContactItem[]>([]);
+  const contactList = useAppSelector(selectContactList);
+  const dispatch = useAppDispatch();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
   };
 
   useEffect(() => {
-    fetch(CONTACTS_URL)
-      .then((res) => res.json())
-      .then((res) => setContactList(res));
-  }, []);
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <div className='contactList'>
