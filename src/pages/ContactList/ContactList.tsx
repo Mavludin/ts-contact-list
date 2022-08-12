@@ -1,5 +1,5 @@
 import { Avatar, Button, List } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Typography, Input } from 'antd';
 import './ContactList.css';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -9,15 +9,21 @@ import {
   selectContactList,
   selectContactStatus,
 } from '../../slices/contact/contactSlice';
+import { AddForm } from './AddForm/AddForm';
 
 const { Search } = Input;
 const { Title } = Typography;
 
 export const ContactList = () => {
+  const [isAddFormVisible, setIsAddFormVisible] = useState(false);
+
   const contactList = useAppSelector(selectContactList);
   const status = useAppSelector(selectContactStatus);
 
   const dispatch = useAppDispatch();
+
+  const showAddForm = () => setIsAddFormVisible(true);
+  const hideAddForm = () => setIsAddFormVisible(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
@@ -66,9 +72,15 @@ export const ContactList = () => {
           </List.Item>
         )}
       />
-      <Button type='primary' className='add-btn'>
+      <Button onClick={showAddForm} type='primary' className='add-btn'>
         Добавить новый контакт
       </Button>
+      {isAddFormVisible && (
+        <AddForm
+          isAddFormVisible={isAddFormVisible}
+          hideAddForm={hideAddForm}
+        />
+      )}
     </div>
   );
 };
