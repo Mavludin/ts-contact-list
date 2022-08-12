@@ -1,13 +1,16 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Form, Modal, Input, Button } from 'antd';
 
-import { useAppSelector } from '../../../app/hooks';
-import { selectContactStatus } from '../../../slices/contact/contactSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import {
+  addContact,
+  selectContactStatus,
+} from '../../../slices/contact/contactSlice';
 
 type AddFormValues = {
   name: string;
   phone: string;
-}
+};
 
 type Props = {
   isAddFormVisible: boolean;
@@ -15,10 +18,13 @@ type Props = {
 };
 
 export const AddForm = ({ isAddFormVisible, hideAddForm }: Props) => {
-
   const status = useAppSelector(selectContactStatus);
+  const dispatch = useAppDispatch();
 
-  const onFinish = async ({ name, phone }: AddFormValues) => {}
+  const onFinish = async ({ name, phone }: AddFormValues) => {
+    await dispatch(addContact({ name, phone }));
+    hideAddForm();
+  };
 
   return (
     <Modal
@@ -41,7 +47,7 @@ export const AddForm = ({ isAddFormVisible, hideAddForm }: Props) => {
         >
           <Input
             prefix={<UserOutlined className='site-form-item-icon' />}
-            placeholder='Логин'
+            placeholder='Название контакта'
           />
         </Form.Item>
 
@@ -53,7 +59,7 @@ export const AddForm = ({ isAddFormVisible, hideAddForm }: Props) => {
         >
           <Input
             prefix={<UserOutlined className='site-form-item-icon' />}
-            placeholder='Логин'
+            placeholder='Номер телефона'
           />
         </Form.Item>
 
