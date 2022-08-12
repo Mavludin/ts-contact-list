@@ -1,6 +1,7 @@
 .login-form {
   width: 300px;
-  margin: 200px auto 0 auto;
+
+  margin-top: 200px;
 }
 
 .login-form-button {

@@ -11,7 +11,7 @@ export const AppRoutes = () => {
 
   return (
     <>
-      { isLoggedIn && <Header />}
+      {isLoggedIn && <Header />}
       <Routes>
         <Route
           path={MyRoutes.Home}

@@ -1,13 +1,17 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
+import { Alert, Button, Form, Input } from 'antd';
 import { Typography } from 'antd';
-import { MyRoutes} from '../../shared/constants';
+import { MyRoutes } from '../../shared/constants';
 
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { logIn } from '../../slices/auth/authSlice';
-import { fetchUsers, selectUserStatus } from '../../slices/user/userSlice';
+import {
+  fetchUsers,
+  selectUserError,
+  selectUserStatus,
+} from '../../slices/user/userSlice';
 
 const { Title } = Typography;
 
@@ -16,8 +20,8 @@ type LoginValues = {
 };
 
 export const Login = () => {
-
   const status = useAppSelector(selectUserStatus);
+  const error = useAppSelector(selectUserError);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -31,7 +35,7 @@ export const Login = () => {
         navigate(MyRoutes.Contacts);
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
 
@@ -75,6 +79,7 @@ export const Login = () => {
         </Button>
       </Form.Item>
 
+      {error && <Alert message={error} type='error' />}
     </Form>
   );
 };
