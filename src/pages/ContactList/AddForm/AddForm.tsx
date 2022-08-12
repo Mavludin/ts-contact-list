@@ -32,6 +32,7 @@ export const AddForm = ({ isAddFormVisible, hideAddForm }: Props) => {
       visible={isAddFormVisible}
       onCancel={hideAddForm}
       width={400}
+      centered
       footer={null}
     >
       <Form

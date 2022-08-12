@@ -40,6 +40,7 @@ export const EditForm = ({
       visible={isEditFormVisible}
       onCancel={hideEditForm}
       width={400}
+      centered
       footer={null}
     >
       <Form

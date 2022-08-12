@@ -1,4 +1,4 @@
-import { Avatar, Button, List } from 'antd';
+import { Avatar, Button, List, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import { Typography } from 'antd';
 import './ContactList.css';
@@ -13,8 +13,15 @@ import {
 import { AddForm } from './AddForm/AddForm';
 import { EditForm } from './EditForm/EditForm';
 import { SearchForm } from './SearchForm/SearchForm';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  PlusCircleOutlined,
+} from '@ant-design/icons';
 
 const { Title } = Typography;
+const { confirm } = Modal;
 
 export const ContactList = () => {
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
@@ -41,7 +48,17 @@ export const ContactList = () => {
   const hideEditForm = () => setIsEditFormVisible(false);
 
   const handleDeletion = (id: string) => {
-    dispatch(deleteContact(id));
+    confirm({
+      title: 'Вы уверены?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Изменения не обратить вспять!',
+      onOk() {
+        dispatch(deleteContact(id));
+      },
+      onCancel() {},
+      cancelText: 'Отмена',
+      okText: 'Да',
+    });
   };
 
   useEffect(() => {
@@ -64,14 +81,14 @@ export const ContactList = () => {
                 onClick={() => showEditForm(contact)}
                 key='list-loadmore-edit'
               >
-                edit
+                <EditOutlined />
               </Button>,
               <Button
                 onClick={() => handleDeletion(contact.id)}
                 key='list-loadmore-more'
                 danger
               >
-                delete
+                <DeleteOutlined />
               </Button>,
             ]}
           >
@@ -83,7 +100,12 @@ export const ContactList = () => {
           </List.Item>
         )}
       />
-      <Button onClick={showAddForm} type='primary' className='add-btn'>
+      <Button
+        icon={<PlusCircleOutlined />}
+        onClick={showAddForm}
+        type='primary'
+        className='add-btn'
+      >
         Добавить новый контакт
       </Button>
       {isAddFormVisible && (
