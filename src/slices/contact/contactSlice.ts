@@ -11,7 +11,7 @@ type ContactItem = {
 export type ContactState = {
   list: ContactItem[];
   status: 'idle' | 'loading' | 'failed';
-}
+};
 
 const initialState: ContactState = {
   list: [],
@@ -19,12 +19,22 @@ const initialState: ContactState = {
 };
 
 export const fetchContacts = createAsyncThunk(
-  "contact/fetchContacts",
+  'contact/fetchContacts',
   async () => {
     const response = await fetch(CONTACTS_URL);
     return await response.json();
   }
-)
+);
+
+export const deleteContact = createAsyncThunk(
+  'contact/deleteContact',
+  async (id: string) => {
+    await fetch(`${CONTACTS_URL}/${id}`, {
+      method: 'DELETE',
+    });
+    return id;
+  }
+);
 
 export const contactSlice = createSlice({
   name: 'contact',
@@ -32,20 +42,37 @@ export const contactSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-    .addCase(fetchContacts.pending, (state) => {
-      state.status = 'loading';
-    })
-    .addCase(fetchContacts.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.list = action.payload;
-      }
-    })
-    .addCase(fetchContacts.rejected, (state) => {
-      state.status = 'failed';
-    });
-  }
+      .addCase(fetchContacts.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        state.status = 'idle';
+        if (action.payload) {
+          state.list = action.payload;
+        }
+      })
+      .addCase(fetchContacts.rejected, (state) => {
+        state.status = 'failed';
+      })
+
+      .addCase(deleteContact.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        state.status = 'idle';
+        if (action.payload) {
+          state.list = state.list.filter(
+            (contact) => contact.id !== action.payload
+          );
+        }
+      })
+      .addCase(deleteContact.rejected, (state) => {
+        state.status = 'failed';
+      });
+  },
 });
 
 export const selectContactList = (state: RootState) => state.contact.list;
+export const selectContactStatus = (state: RootState) => state.contact.status;
 
 export default contactSlice.reducer;
