@@ -50,6 +50,20 @@ export const addContact = createAsyncThunk(
   }
 );
 
+export const editContact = createAsyncThunk(
+  'contact/editContact',
+  async (editedContact: ContactItem) => {
+    const response = await fetch(`${CONTACTS_URL}/${editedContact.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(editedContact),
+    });
+    return await response.json() as ContactItem;
+  }
+);
+
 export const contactSlice = createSlice({
   name: 'contact',
   initialState,
@@ -95,7 +109,25 @@ export const contactSlice = createSlice({
       })
       .addCase(addContact.rejected, (state) => {
         state.status = 'failed';
-      });
+      })
+
+
+      .addCase(editContact.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(editContact.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.list = [...state.list].map((contact) => {
+          if (contact.id === action.payload.id) {
+            return action.payload
+          }
+
+          return contact
+        })
+      })
+      .addCase(editContact.rejected, (state) => {
+        state.status = 'failed';
+      })
   },
 });
 

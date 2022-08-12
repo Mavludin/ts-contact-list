@@ -1,9 +1,10 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Form, Modal, Input, Button } from 'antd';
 
-import { useAppSelector } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import {
   ContactItem,
+  editContact,
   selectContactStatus,
 } from '../../../slices/contact/contactSlice';
 
@@ -24,8 +25,14 @@ export const EditForm = ({
   selectedContact,
 }: Props) => {
   const status = useAppSelector(selectContactStatus);
+  const dispatch = useAppDispatch();
 
-  const onFinish = async () => {};
+  const onFinish = async ({ name, phone }: EditFormValues) => {
+    if (!selectedContact) return
+
+    await dispatch(editContact({...selectedContact, name, phone}))
+    hideEditForm()
+  };
 
   return (
     <Modal
