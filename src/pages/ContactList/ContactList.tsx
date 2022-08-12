@@ -1,6 +1,6 @@
 import { Avatar, Button, List } from 'antd';
 import { useEffect, useState } from 'react';
-import { Typography, Input } from 'antd';
+import { Typography } from 'antd';
 import './ContactList.css';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
@@ -12,8 +12,8 @@ import {
 } from '../../slices/contact/contactSlice';
 import { AddForm } from './AddForm/AddForm';
 import { EditForm } from './EditForm/EditForm';
+import { SearchForm } from './SearchForm/SearchForm';
 
-const { Search } = Input;
 const { Title } = Typography;
 
 export const ContactList = () => {
@@ -24,6 +24,9 @@ export const ContactList = () => {
   );
 
   const contactList = useAppSelector(selectContactList);
+  const [filteredList, setFiltered] = useState<ContactItem[]>(contactList);
+  const [isFiltering, setIsFiltering] = useState(false);
+
   const status = useAppSelector(selectContactStatus);
 
   const dispatch = useAppDispatch();
@@ -37,10 +40,6 @@ export const ContactList = () => {
   };
   const hideEditForm = () => setIsEditFormVisible(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
-  };
-
   const handleDeletion = (id: string) => {
     dispatch(deleteContact(id));
   };
@@ -52,16 +51,11 @@ export const ContactList = () => {
   return (
     <div className='contactList'>
       <Title>Список контактов</Title>
-      <Search
-        className='contactSearch'
-        placeholder='Найти контакты'
-        onChange={handleChange}
-        enterButton
-      />
+      <SearchForm setFiltered={setFiltered} setIsFiltering={setIsFiltering} />
       <List
         bordered
         itemLayout='horizontal'
-        dataSource={contactList}
+        dataSource={isFiltering ? filteredList : contactList}
         loading={status === 'loading'}
         renderItem={(contact) => (
           <List.Item
