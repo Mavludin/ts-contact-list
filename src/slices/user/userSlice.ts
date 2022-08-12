@@ -12,11 +12,11 @@ export type UserItem = {
 
 export interface UserState {
   data: UserItem | null;
-  status: 'idle' | 'loading' | 'failed' | 'success';
+  status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: UserState = {
-  data: null,
+  data: JSON.parse(localStorage.getItem('userData') || '{}'),
   status: 'idle',
 };
 
@@ -26,7 +26,7 @@ export const fetchUsers = createAsyncThunk(
     try {
       const response = await fetch(USERS_URL);
       const usersList = await response.json() as UserItem[];
-      return usersList.filter(({ username }) => username === userNameFromInput);
+      return usersList.find(({ username }) => username === userNameFromInput);
     } catch(err) {
       return rejectWithValue(err)
     }
@@ -43,9 +43,9 @@ export const userSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
-        if (action.payload[0]) {
-          state.status = 'success';
-          state.data = action.payload[0];
+        if (action.payload) {
+          state.data = action.payload;
+          localStorage.setItem('userData', JSON.stringify(action.payload))
         }
       })
       .addCase(fetchUsers.rejected, (state) => {
@@ -54,7 +54,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const selectUser = (state: RootState) => state.user.data;
+export const selectUserData = (state: RootState) => state.user.data;
 export const selectUserStatus = (state: RootState) => state.user.status;
 
 export default userSlice.reducer;
