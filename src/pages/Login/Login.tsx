@@ -44,7 +44,7 @@ export const Login = () => {
       setError('Такого пользователя не существует!');
     } else {
       setError('');
-      dispatch(logIn);
+      dispatch(logIn());
       navigate(MyRoutes.Contacts);
     }
 

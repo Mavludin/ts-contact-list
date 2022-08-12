@@ -13,11 +13,11 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logIn: (state, action) => {
+    logIn: (state) => {
       state.isLoggedIn = true;
       localStorage.setItem('isLoggedIn', 'true');
     },
-    logOut: (state, action) => {
+    logOut: (state) => {
       state.isLoggedIn = false
       localStorage.setItem('isLoggedIn', 'false');
     },
@@ -25,6 +25,6 @@ export const authSlice = createSlice({
 });
 
 export const selectIsLoggedIn = (state: RootState) => state.auth.isLoggedIn;
-export const { logIn } = authSlice.actions;
+export const { logIn, logOut } = authSlice.actions;
 
 export default authSlice.reducer;
