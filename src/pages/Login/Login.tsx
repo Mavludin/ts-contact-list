@@ -3,15 +3,15 @@ import { Alert, Button, Form, Input } from 'antd';
 import { Typography } from 'antd';
 import { MyRoutes } from '../../shared/constants';
 
-import './Login.css';
+import s from './Login.module.css';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { logIn } from '../../slices/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { logIn } from '../../store/slices/auth/authSlice';
 import {
   selectUserError,
   selectUserStatus,
-} from '../../slices/user/userSlice';
-import { fetchUsers } from '../../slices/user/userApi';
+} from '../../store/slices/user/userSlice';
+import { fetchUsers } from '../../store/slices/user/userApi';
 
 const { Title } = Typography;
 
@@ -41,8 +41,7 @@ export const Login = () => {
 
   return (
     <Form
-      name='normal_login'
-      className='login-form'
+      className={s.loginForm}
       initialValues={{ userName: '', password: '' }}
       onFinish={onFinish}
     >
@@ -73,7 +72,7 @@ export const Login = () => {
           loading={status === 'loading'}
           type='primary'
           htmlType='submit'
-          className='login-form-button'
+          className={s.submitBtn}
         >
           Вход
         </Button>

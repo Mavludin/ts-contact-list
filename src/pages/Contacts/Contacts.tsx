@@ -1,12 +1,12 @@
 import { Avatar, Button, List, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import { Typography } from 'antd';
-import './ContactList.css';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import s from './Contacts.module.css';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
   selectContactList,
   selectContactStatus,
-} from '../../slices/contact/contactSlice';
+} from '../../store/slices/contact/contactSlice';
 import { AddForm } from './AddForm/AddForm';
 import { EditForm } from './EditForm/EditForm';
 import { SearchForm } from './SearchForm/SearchForm';
@@ -16,12 +16,12 @@ import {
   ExclamationCircleOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons';
-import { ContactItem, deleteContact, fetchContacts } from '../../slices/contact/contactApi';
+import { ContactItem, deleteContact, fetchContacts } from '../../store/slices/contact/contactApi';
 
 const { Title } = Typography;
 const { confirm } = Modal;
 
-export const ContactList = () => {
+export const Contacts = () => {
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
   const [selectedContact, setSelectedContact] = useState<ContactItem | null>(
@@ -64,7 +64,7 @@ export const ContactList = () => {
   }, [dispatch]);
 
   return (
-    <div className='contactList'>
+    <div className={s.contactList}>
       <Title>Список контактов</Title>
       <SearchForm setFiltered={setFiltered} setIsFiltering={setIsFiltering} />
       <List
@@ -102,7 +102,7 @@ export const ContactList = () => {
         icon={<PlusCircleOutlined />}
         onClick={showAddForm}
         type='primary'
-        className='add-btn'
+        className={s.addBtn}
       >
         Добавить новый контакт
       </Button>

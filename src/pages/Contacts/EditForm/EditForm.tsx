@@ -1,9 +1,9 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Form, Modal, Input, Button } from 'antd';
 
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { ContactItem, editContact } from '../../../slices/contact/contactApi';
-import { selectContactStatus } from '../../../slices/contact/contactSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { ContactItem, editContact } from '../../../store/slices/contact/contactApi';
+import { selectContactStatus } from '../../../store/slices/contact/contactSlice';
 
 type EditFormValues = {
   name: string;
@@ -41,7 +41,6 @@ export const EditForm = ({
       footer={null}
     >
       <Form
-        name='normal_login'
         initialValues={{
           name: selectedContact?.name,
           phone: selectedContact?.phone,

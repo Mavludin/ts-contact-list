@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useAppSelector } from './app/hooks';
+import { useAppSelector } from './store/hooks';
 import { Header } from './components/Header/Header';
-import { ContactList } from './pages/ContactList/ContactList';
+import { Contacts } from './pages/Contacts/Contacts';
 import { Login } from './pages/Login/Login';
 import { MyRoutes } from './shared/constants';
-import { selectIsLoggedIn } from './slices/auth/authSlice';
+import { selectIsLoggedIn } from './store/slices/auth/authSlice';
 
 export const AppRoutes = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
@@ -30,7 +30,7 @@ export const AppRoutes = () => {
         <Route
           path={MyRoutes.Contacts}
           element={
-            isLoggedIn ? <ContactList /> : <Navigate to={MyRoutes.Login} />
+            isLoggedIn ? <Contacts /> : <Navigate to={MyRoutes.Login} />
           }
         />
       </Routes>

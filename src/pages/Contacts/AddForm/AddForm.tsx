@@ -1,9 +1,11 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Form, Modal, Input, Button } from 'antd';
 
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addContact } from '../../../slices/contact/contactApi';
-import { selectContactStatus } from '../../../slices/contact/contactSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { addContact } from '../../../store/slices/contact/contactApi';
+import { selectContactStatus } from '../../../store/slices/contact/contactSlice';
+
+import s from './AddForm.module.css';
 
 type AddFormValues = {
   name: string;
@@ -34,7 +36,6 @@ export const AddForm = ({ isAddFormVisible, hideAddForm }: Props) => {
       footer={null}
     >
       <Form
-        name='normal_login'
         initialValues={{ name: '', phone: '' }}
         onFinish={onFinish}
       >
@@ -67,7 +68,7 @@ export const AddForm = ({ isAddFormVisible, hideAddForm }: Props) => {
             loading={status === 'loading'}
             type='primary'
             htmlType='submit'
-            className='login-form-button'
+            className={s.submitBtn}
           >
             Добавить
           </Button>

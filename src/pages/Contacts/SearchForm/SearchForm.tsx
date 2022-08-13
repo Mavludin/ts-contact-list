@@ -1,8 +1,10 @@
 import { Form } from 'antd';
 import { Input } from 'antd';
-import { useAppSelector } from '../../../app/hooks';
-import { ContactItem } from '../../../slices/contact/contactApi';
-import { selectContactList } from '../../../slices/contact/contactSlice';
+import { useAppSelector } from '../../../store/hooks';
+import { ContactItem } from '../../../store/slices/contact/contactApi';
+import { selectContactList } from '../../../store/slices/contact/contactSlice';
+
+import s from './SearchForm.module.css'
 
 const { Search } = Input;
 
@@ -36,7 +38,7 @@ export const SearchForm = ({ setFiltered, setIsFiltering }: Props) => {
   return (
     <Form>
       <Search
-        className='contactSearch'
+        className={s.contactSearch}
         placeholder='Найти контакты'
         onChange={handleChange}
         enterButton

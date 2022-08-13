@@ -1,9 +1,8 @@
-.login-form {
+.loginForm {
   width: 300px;
-
   margin-top: 200px;
 }
 
-.login-form-button {
+.submitBtn {
   width: 100%;
 }

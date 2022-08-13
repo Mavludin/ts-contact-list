@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { USERS_URL } from '../../shared/constants';
+import { USERS_URL } from '../../../shared/constants';
 
 export type UserItem = {
   name: string;

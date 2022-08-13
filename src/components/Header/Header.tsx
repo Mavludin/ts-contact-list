@@ -1,10 +1,10 @@
 import { LogoutOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { MyRoutes } from '../../shared/constants';
-import { logOut } from '../../slices/auth/authSlice';
-import { selectUserData } from '../../slices/user/userSlice';
+import { logOut } from '../../store/slices/auth/authSlice';
+import { selectUserData } from '../../store/slices/user/userSlice';
 import s from './Header.module.css';
 
 export const Header = () => {

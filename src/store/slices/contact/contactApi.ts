@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { CONTACTS_URL } from "../../shared/constants";
+import { CONTACTS_URL } from "../../../shared/constants";
 
 export type ContactItem = {
   id: string;
