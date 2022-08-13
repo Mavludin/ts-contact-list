@@ -5,8 +5,6 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { addContact } from '../../../store/slices/contact/contactApi';
 import { selectContactStatus } from '../../../store/slices/contact/contactSlice';
 
-import s from './AddForm.module.css';
-
 type AddFormValues = {
   name: string;
   phone: string;
@@ -68,7 +66,7 @@ export const AddForm = ({ isAddFormVisible, hideAddForm }: Props) => {
             loading={status === 'loading'}
             type='primary'
             htmlType='submit'
-            className={s.submitBtn}
+            style={{ width: '100%' }}
           >
             Добавить
           </Button>

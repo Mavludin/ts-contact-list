@@ -76,6 +76,7 @@ export const EditForm = ({
             loading={status === 'loading'}
             type='primary'
             htmlType='submit'
+            style={{ width: '100%' }}
           >
             Сохранить
           </Button>

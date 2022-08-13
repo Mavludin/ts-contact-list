@@ -72,7 +72,7 @@ export const Login = () => {
           loading={status === 'loading'}
           type='primary'
           htmlType='submit'
-          className={s.submitBtn}
+          style={{ width: '100%' }}
         >
           Вход
         </Button>
