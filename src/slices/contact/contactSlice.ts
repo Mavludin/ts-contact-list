@@ -1,12 +1,12 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { CONTACTS_URL } from '../../shared/constants';
-
-export type ContactItem = {
-  id: string;
-  name: string;
-  phone: string;
-};
+import {
+  addContact,
+  ContactItem,
+  deleteContact,
+  editContact,
+  fetchContacts,
+} from './contactApi';
 
 export type ContactState = {
   list: ContactItem[];
@@ -18,58 +18,13 @@ const initialState: ContactState = {
   status: 'idle',
 };
 
-export const fetchContacts = createAsyncThunk(
-  'contact/fetchContacts',
-  async () => {
-    const response = await fetch(CONTACTS_URL);
-    return await response.json();
-  }
-);
-
-export const deleteContact = createAsyncThunk(
-  'contact/deleteContact',
-  async (id: string) => {
-    await fetch(`${CONTACTS_URL}/${id}`, {
-      method: 'DELETE',
-    });
-    return id;
-  }
-);
-
-export const addContact = createAsyncThunk(
-  'contact/addContact',
-  async (newContact: { name: string; phone: string }) => {
-    const response = await fetch(CONTACTS_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newContact),
-    });
-    return await response.json();
-  }
-);
-
-export const editContact = createAsyncThunk(
-  'contact/editContact',
-  async (editedContact: ContactItem) => {
-    const response = await fetch(`${CONTACTS_URL}/${editedContact.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(editedContact),
-    });
-    return await response.json() as ContactItem;
-  }
-);
-
 export const contactSlice = createSlice({
   name: 'contact',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // cases for fethings contacts
       .addCase(fetchContacts.pending, (state) => {
         state.status = 'loading';
       })
@@ -83,6 +38,7 @@ export const contactSlice = createSlice({
         state.status = 'failed';
       })
 
+      // cases for deleting a single contact
       .addCase(deleteContact.pending, (state) => {
         state.status = 'loading';
       })
@@ -98,6 +54,7 @@ export const contactSlice = createSlice({
         state.status = 'failed';
       })
 
+      // cases for addings a single contact
       .addCase(addContact.pending, (state) => {
         state.status = 'loading';
       })
@@ -111,23 +68,23 @@ export const contactSlice = createSlice({
         state.status = 'failed';
       })
 
-
+      // cases for editing a single contact
       .addCase(editContact.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(editContact.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.list = [...state.list].map((contact) => {
+        state.list = state.list.map((contact) => {
           if (contact.id === action.payload.id) {
-            return action.payload
+            return action.payload;
           }
 
-          return contact
-        })
+          return contact;
+        });
       })
       .addCase(editContact.rejected, (state) => {
         state.status = 'failed';
-      })
+      });
   },
 });
 

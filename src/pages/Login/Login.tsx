@@ -8,10 +8,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { logIn } from '../../slices/auth/authSlice';
 import {
-  fetchUsers,
   selectUserError,
   selectUserStatus,
 } from '../../slices/user/userSlice';
+import { fetchUsers } from '../../slices/user/userApi';
 
 const { Title } = Typography;
 

@@ -1,10 +1,8 @@
 import { Form } from 'antd';
 import { Input } from 'antd';
 import { useAppSelector } from '../../../app/hooks';
-import {
-  ContactItem,
-  selectContactList,
-} from '../../../slices/contact/contactSlice';
+import { ContactItem } from '../../../slices/contact/contactApi';
+import { selectContactList } from '../../../slices/contact/contactSlice';
 
 const { Search } = Input;
 

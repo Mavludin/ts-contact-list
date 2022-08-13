@@ -2,10 +2,8 @@ import { UserOutlined } from '@ant-design/icons';
 import { Form, Modal, Input, Button } from 'antd';
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import {
-  addContact,
-  selectContactStatus,
-} from '../../../slices/contact/contactSlice';
+import { addContact } from '../../../slices/contact/contactApi';
+import { selectContactStatus } from '../../../slices/contact/contactSlice';
 
 type AddFormValues = {
   name: string;

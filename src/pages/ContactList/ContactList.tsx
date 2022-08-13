@@ -4,9 +4,6 @@ import { Typography } from 'antd';
 import './ContactList.css';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
-  ContactItem,
-  deleteContact,
-  fetchContacts,
   selectContactList,
   selectContactStatus,
 } from '../../slices/contact/contactSlice';
@@ -19,6 +16,7 @@ import {
   ExclamationCircleOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons';
+import { ContactItem, deleteContact, fetchContacts } from '../../slices/contact/contactApi';
 
 const { Title } = Typography;
 const { confirm } = Modal;
