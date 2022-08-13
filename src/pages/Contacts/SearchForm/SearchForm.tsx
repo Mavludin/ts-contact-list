@@ -4,7 +4,7 @@ import { useAppSelector } from '../../../store/hooks';
 import { ContactItem } from '../../../store/slices/contact/contactApi';
 import { selectContactList } from '../../../store/slices/contact/contactSlice';
 
-import s from './SearchForm.module.css'
+import s from './SearchForm.module.css';
 
 const { Search } = Input;
 

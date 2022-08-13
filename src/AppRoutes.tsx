@@ -3,7 +3,7 @@ import { useAppSelector } from './store/hooks';
 import { Header } from './components/Header/Header';
 import { Contacts } from './pages/Contacts/Contacts';
 import { Login } from './pages/Login/Login';
-import { MyRoutes } from './shared/constants';
+import { Endpoints } from './shared/constants';
 import { selectIsLoggedIn } from './store/slices/auth/authSlice';
 
 export const AppRoutes = () => {
@@ -14,24 +14,22 @@ export const AppRoutes = () => {
       {isLoggedIn && <Header />}
       <Routes>
         <Route
-          path={MyRoutes.Home}
+          path={Endpoints.Home}
           element={
             isLoggedIn ? (
-              <Navigate to={MyRoutes.Contacts} />
+              <Navigate to={Endpoints.Contacts} />
             ) : (
-              <Navigate to={MyRoutes.Login} />
+              <Navigate to={Endpoints.Login} />
             )
           }
         />
         <Route
-          path={MyRoutes.Login}
-          element={isLoggedIn ? <Navigate to={MyRoutes.Contacts} /> : <Login />}
+          path={Endpoints.Login}
+          element={isLoggedIn ? <Navigate to={Endpoints.Contacts} /> : <Login />}
         />
         <Route
-          path={MyRoutes.Contacts}
-          element={
-            isLoggedIn ? <Contacts /> : <Navigate to={MyRoutes.Login} />
-          }
+          path={Endpoints.Contacts}
+          element={isLoggedIn ? <Contacts /> : <Navigate to={Endpoints.Login} />}
         />
       </Routes>
     </>

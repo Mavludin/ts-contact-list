@@ -3,7 +3,7 @@ import { RootState } from '../..';
 
 export type AuthState = {
   isLoggedIn: boolean;
-}
+};
 
 const initialState: AuthState = {
   isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
@@ -18,7 +18,7 @@ export const authSlice = createSlice({
       localStorage.setItem('isLoggedIn', 'true');
     },
     logOut: (state) => {
-      state.isLoggedIn = false
+      state.isLoggedIn = false;
       localStorage.setItem('isLoggedIn', 'false');
     },
   },

@@ -1,7 +1,6 @@
 import { Button } from 'antd';
 import { useEffect, useState } from 'react';
 import { Typography } from 'antd';
-import s from './Contacts.module.css';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectContactList } from '../../store/slices/contact/contactSlice';
 import { AddForm } from './AddForm/AddForm';
@@ -13,6 +12,8 @@ import {
   fetchContacts,
 } from '../../store/slices/contact/contactApi';
 import { ContactList } from './List/ContactList';
+
+import s from './Contacts.module.css';
 
 const { Title } = Typography;
 

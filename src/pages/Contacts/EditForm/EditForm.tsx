@@ -2,7 +2,10 @@ import { UserOutlined } from '@ant-design/icons';
 import { Form, Modal, Input, Button } from 'antd';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { ContactItem, editContact } from '../../../store/slices/contact/contactApi';
+import {
+  ContactItem,
+  editContact,
+} from '../../../store/slices/contact/contactApi';
 import { selectContactStatus } from '../../../store/slices/contact/contactSlice';
 
 type EditFormValues = {

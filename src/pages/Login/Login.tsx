@@ -1,9 +1,8 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Alert, Button, Form, Input } from 'antd';
 import { Typography } from 'antd';
-import { MyRoutes } from '../../shared/constants';
+import { Endpoints } from '../../shared/constants';
 
-import s from './Login.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { logIn } from '../../store/slices/auth/authSlice';
@@ -12,6 +11,8 @@ import {
   selectUserStatus,
 } from '../../store/slices/user/userSlice';
 import { fetchUsers } from '../../store/slices/user/userApi';
+
+import s from './Login.module.css';
 
 const { Title } = Typography;
 
@@ -27,15 +28,11 @@ export const Login = () => {
   const dispatch = useAppDispatch();
 
   const onFinish = async ({ userName }: LoginValues) => {
-    try {
-      const isUserFound = await dispatch(fetchUsers(userName)).unwrap();
+    const isUserFound = await dispatch(fetchUsers(userName)).unwrap();
 
-      if (isUserFound) {
-        dispatch(logIn());
-        navigate(MyRoutes.Contacts);
-      }
-    } catch (err) {
-      console.log(err);
+    if (isUserFound) {
+      dispatch(logIn());
+      navigate(Endpoints.Contacts);
     }
   };
 

@@ -27,7 +27,7 @@ export const userSlice = createSlice({
         if (action.payload) {
           state.data = action.payload;
           localStorage.setItem('userData', JSON.stringify(action.payload));
-          state.error = ''
+          state.error = '';
         }
       })
       .addCase(fetchUsers.rejected, (state, action) => {

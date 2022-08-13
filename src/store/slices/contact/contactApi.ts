@@ -1,5 +1,5 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { CONTACTS_URL } from "../../../shared/constants";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { CONTACTS_URL } from '../../../shared/constants';
 
 export type ContactItem = {
   id: string;
@@ -49,6 +49,6 @@ export const editContact = createAsyncThunk(
       },
       body: JSON.stringify(editedContact),
     });
-    return await response.json() as ContactItem;
+    return (await response.json()) as ContactItem;
   }
 );

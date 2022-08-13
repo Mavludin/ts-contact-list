@@ -33,10 +33,7 @@ export const AddForm = ({ isAddFormVisible, hideAddForm }: Props) => {
       centered
       footer={null}
     >
-      <Form
-        initialValues={{ name: '', phone: '' }}
-        onFinish={onFinish}
-      >
+      <Form initialValues={{ name: '', phone: '' }} onFinish={onFinish}>
         <Form.Item
           name='name'
           rules={[
