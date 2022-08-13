@@ -11,7 +11,7 @@ import {
   ContactItem,
   fetchContacts,
 } from '../../store/slices/contact/contactApi';
-import { ContactList } from './List/ContactList';
+import { ContactList } from './ContactList/ContactList';
 
 import s from './Contacts.module.css';
 
