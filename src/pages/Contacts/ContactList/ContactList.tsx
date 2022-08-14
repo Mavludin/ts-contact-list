@@ -31,7 +31,6 @@ export const ContactList = ({
   setSelectedContact,
 }: Props) => {
   const contactList = useAppSelector(selectContactList);
-
   const status = useAppSelector(selectContactStatus);
 
   const dispatch = useAppDispatch();

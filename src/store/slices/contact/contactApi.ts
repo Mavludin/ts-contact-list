@@ -7,37 +7,61 @@ export type ContactItem = {
   phone: string;
 };
 
-export const fetchContacts = createAsyncThunk(
-  'contact/fetchContacts',
-  async () => {
-    const response = await fetch(CONTACTS_URL);
-    return await response.json();
-  }
-);
+export const fetchContacts = createAsyncThunk<
+  ContactItem[],
+  void,
+  { rejectValue: string }
+>('contact/fetchContacts', async (_, { rejectWithValue }) => {
+  const response = await fetch(CONTACTS_URL);
 
-export const deleteContact = createAsyncThunk(
-  'contact/deleteContact',
-  async (id: string) => {
-    await fetch(`${CONTACTS_URL}/${id}`, {
-      method: 'DELETE',
-    });
-    return id;
+  if (!response.ok) {
+    return rejectWithValue(
+      `Ошибка при получении контактов: ${response.status} (${response.statusText})`
+    );
   }
-);
 
-export const addContact = createAsyncThunk(
-  'contact/addContact',
-  async (newContact: { name: string; phone: string }) => {
-    const response = await fetch(CONTACTS_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newContact),
-    });
-    return await response.json();
+  return await response.json();
+});
+
+export const deleteContact = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>('contact/deleteContact', async (id, { rejectWithValue }) => {
+  const response = await fetch(`${CONTACTS_URL}/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    return rejectWithValue(
+      `Ошибка при удалении: ${response.status} (${response.statusText})`
+    );
   }
-);
+
+  return id;
+});
+
+export const addContact = createAsyncThunk<
+  ContactItem,
+  { name: string; phone: string },
+  { rejectValue: string }
+>('contact/addContact', async (newContact, { rejectWithValue }) => {
+  const response = await fetch(CONTACTS_URL + '123', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newContact),
+  });
+
+  if (!response.ok) {
+    return rejectWithValue(
+      `Ошибка при добавлении: ${response.status} (${response.statusText})`
+    );
+  }
+
+  return await response.json();
+});
 
 export const editContact = createAsyncThunk<
   ContactItem,
@@ -53,7 +77,9 @@ export const editContact = createAsyncThunk<
   });
 
   if (!response.ok) {
-    return rejectWithValue(`${response.status}: ${response.statusText}`);
+    return rejectWithValue(
+      `Ошибка при редактировании: ${response.status} (${response.statusText})`
+    );
   }
 
   return await response.json();

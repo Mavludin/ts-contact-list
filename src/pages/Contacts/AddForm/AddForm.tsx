@@ -24,7 +24,9 @@ export const AddForm = ({ isAddFormVisible, hideAddForm }: Props) => {
   const dispatch = useAppDispatch();
 
   const onFinish = async ({ name, phone }: AddFormValues) => {
-    await dispatch(addContact({ name, phone })).then(hideAddForm);
+    await dispatch(addContact({ name, phone }))
+    .unwrap()
+    .then(hideAddForm);
   };
 
   return (

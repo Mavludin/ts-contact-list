@@ -37,8 +37,13 @@ export const contactSlice = createSlice({
           state.error = '';
         }
       })
-      .addCase(fetchContacts.rejected, (state) => {
+      .addCase(fetchContacts.rejected, (state, action) => {
         state.status = 'failed';
+        if (action.payload) {
+          state.error = action.payload;
+        } else {
+          state.error = action.error.message;
+        }
       })
 
       // cases for deleting a single contact
@@ -54,8 +59,13 @@ export const contactSlice = createSlice({
           state.error = '';
         }
       })
-      .addCase(deleteContact.rejected, (state) => {
+      .addCase(deleteContact.rejected, (state, action) => {
         state.status = 'failed';
+        if (action.payload) {
+          state.error = action.payload;
+        } else {
+          state.error = action.error.message;
+        }
       })
 
       // cases for addings a single contact
@@ -69,8 +79,13 @@ export const contactSlice = createSlice({
           state.error = '';
         }
       })
-      .addCase(addContact.rejected, (state) => {
+      .addCase(addContact.rejected, (state, action) => {
         state.status = 'failed';
+        if (action.payload) {
+          state.error = action.payload;
+        } else {
+          state.error = action.error.message;
+        }
       })
 
       // cases for editing a single contact

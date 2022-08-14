@@ -1,8 +1,8 @@
-import { Button } from 'antd';
+import { Alert, Button } from 'antd';
 import { useEffect, useState } from 'react';
 import { Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { selectContactList } from '../../store/slices/contact/contactSlice';
+import { selectContactError, selectContactList } from '../../store/slices/contact/contactSlice';
 import { AddForm } from './AddForm/AddForm';
 import { EditForm } from './EditForm/EditForm';
 import { SearchForm } from './SearchForm/SearchForm';
@@ -25,6 +25,7 @@ export const Contacts = () => {
   );
 
   const contactList = useAppSelector(selectContactList);
+  const error = useAppSelector(selectContactError);
   const [filteredList, setFiltered] = useState<ContactItem[]>(contactList);
   const [isFiltering, setIsFiltering] = useState(false);
 
@@ -43,6 +44,7 @@ export const Contacts = () => {
     <div className={s.contactList}>
       <Title>Список контактов</Title>
       <SearchForm setFiltered={setFiltered} setIsFiltering={setIsFiltering} />
+      {error && <Alert style={{ marginBottom: '20px' }} message={error} type='error' />}
       <ContactList
         filteredList={filteredList}
         isFiltering={isFiltering}
