@@ -1,6 +1,5 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, Button, Form, Input } from 'antd';
-import { Typography } from 'antd';
+import { Alert, Button, Form, Input, Typography } from 'antd';
 import { Endpoints } from '../../shared/constants';
 
 import { useNavigate } from 'react-router-dom';

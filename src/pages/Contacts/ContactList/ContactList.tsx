@@ -18,8 +18,7 @@ import {
 const { confirm } = Modal;
 
 type Props = {
-  filteredList: ContactItem[];
-  isFiltering: boolean;
+  filteredList: ContactItem[] | null;
   setIsEditFormVisible: (value: boolean) => void;
   setSelectedContact: (value: ContactItem | null) => void;
   setError: (value: string) => void;
@@ -27,7 +26,6 @@ type Props = {
 
 export const ContactList = ({
   filteredList,
-  isFiltering,
   setIsEditFormVisible,
   setSelectedContact,
   setError,
@@ -63,7 +61,7 @@ export const ContactList = ({
     <List
       bordered
       itemLayout='horizontal'
-      dataSource={isFiltering ? filteredList : contactList}
+      dataSource={filteredList ? filteredList : contactList}
       loading={status === 'loading'}
       renderItem={(contact) => (
         <List.Item

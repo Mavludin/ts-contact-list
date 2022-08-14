@@ -11,13 +11,11 @@ import {
 export type ContactState = {
   list: ContactItem[];
   status: 'idle' | 'loading' | 'failed';
-  error: string | null | undefined;
 };
 
 const initialState: ContactState = {
   list: [],
   status: 'idle',
-  error: '',
 };
 
 export const contactSlice = createSlice({
@@ -34,7 +32,6 @@ export const contactSlice = createSlice({
         state.status = 'idle';
         if (action.payload) {
           state.list = action.payload;
-          state.error = '';
         }
       })
       .addCase(fetchContacts.rejected, (state) => {
@@ -51,14 +48,13 @@ export const contactSlice = createSlice({
           state.list = state.list.filter(
             (contact) => contact.id !== action.payload
           );
-          state.error = '';
         }
       })
       .addCase(deleteContact.rejected, (state) => {
         state.status = 'failed';
       })
 
-      // cases for addings a single contact
+      // cases for adding a single contact
       .addCase(addContact.pending, (state) => {
         state.status = 'loading';
       })
@@ -66,7 +62,6 @@ export const contactSlice = createSlice({
         state.status = 'idle';
         if (action.payload) {
           state.list = [...state.list, action.payload];
-          state.error = '';
         }
       })
       .addCase(addContact.rejected, (state) => {
@@ -87,7 +82,6 @@ export const contactSlice = createSlice({
 
             return contact;
           });
-          state.error = '';
         }
       })
       .addCase(editContact.rejected, (state) => {
