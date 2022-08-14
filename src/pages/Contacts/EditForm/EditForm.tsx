@@ -1,12 +1,15 @@
-import { UserOutlined } from '@ant-design/icons';
-import { Form, Modal, Input, Button } from 'antd';
+import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
+import { Form, Modal, Input, Button, Alert } from 'antd';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
   ContactItem,
   editContact,
 } from '../../../store/slices/contact/contactApi';
-import { selectContactStatus } from '../../../store/slices/contact/contactSlice';
+import {
+  selectContactError,
+  selectContactStatus,
+} from '../../../store/slices/contact/contactSlice';
 
 type EditFormValues = {
   name: string;
@@ -25,13 +28,15 @@ export const EditForm = ({
   selectedContact,
 }: Props) => {
   const status = useAppSelector(selectContactStatus);
+  const error = useAppSelector(selectContactError);
   const dispatch = useAppDispatch();
 
   const onFinish = async ({ name, phone }: EditFormValues) => {
     if (!selectedContact) return;
 
-    await dispatch(editContact({ ...selectedContact, name, phone }));
-    hideEditForm();
+    await dispatch(editContact({ ...selectedContact, name, phone }))
+      .unwrap()
+      .then(hideEditForm);
   };
 
   return (
@@ -69,7 +74,7 @@ export const EditForm = ({
           ]}
         >
           <Input
-            prefix={<UserOutlined className='site-form-item-icon' />}
+            prefix={<PhoneOutlined className='site-form-item-icon' />}
             placeholder='Номер телефона'
           />
         </Form.Item>
@@ -85,6 +90,7 @@ export const EditForm = ({
           </Button>
         </Form.Item>
       </Form>
+      {error && <Alert message={error} type='error' />}
     </Modal>
   );
 };

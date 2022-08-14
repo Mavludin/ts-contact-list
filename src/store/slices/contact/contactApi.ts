@@ -39,16 +39,22 @@ export const addContact = createAsyncThunk(
   }
 );
 
-export const editContact = createAsyncThunk(
-  'contact/editContact',
-  async (editedContact: ContactItem) => {
-    const response = await fetch(`${CONTACTS_URL}/${editedContact.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(editedContact),
-    });
-    return (await response.json()) as ContactItem;
+export const editContact = createAsyncThunk<
+  ContactItem,
+  ContactItem,
+  { rejectValue: string }
+>('contact/editContact', async (editedContact, { rejectWithValue }) => {
+  const response = await fetch(`${CONTACTS_URL}/${editedContact.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(editedContact),
+  });
+
+  if (!response.ok) {
+    return rejectWithValue(`${response.status}: ${response.statusText}`);
   }
-);
+
+  return await response.json();
+});

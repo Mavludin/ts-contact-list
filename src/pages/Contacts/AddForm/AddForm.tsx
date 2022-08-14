@@ -1,9 +1,12 @@
-import { UserOutlined } from '@ant-design/icons';
-import { Form, Modal, Input, Button } from 'antd';
+import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
+import { Form, Modal, Input, Button, Alert } from 'antd';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { addContact } from '../../../store/slices/contact/contactApi';
-import { selectContactStatus } from '../../../store/slices/contact/contactSlice';
+import {
+  selectContactError,
+  selectContactStatus,
+} from '../../../store/slices/contact/contactSlice';
 
 type AddFormValues = {
   name: string;
@@ -17,11 +20,11 @@ type Props = {
 
 export const AddForm = ({ isAddFormVisible, hideAddForm }: Props) => {
   const status = useAppSelector(selectContactStatus);
+  const error = useAppSelector(selectContactError);
   const dispatch = useAppDispatch();
 
   const onFinish = async ({ name, phone }: AddFormValues) => {
-    await dispatch(addContact({ name, phone }));
-    hideAddForm();
+    await dispatch(addContact({ name, phone })).then(hideAddForm);
   };
 
   return (
@@ -53,7 +56,7 @@ export const AddForm = ({ isAddFormVisible, hideAddForm }: Props) => {
           ]}
         >
           <Input
-            prefix={<UserOutlined className='site-form-item-icon' />}
+            prefix={<PhoneOutlined className='site-form-item-icon' />}
             placeholder='Номер телефона'
           />
         </Form.Item>
@@ -69,6 +72,7 @@ export const AddForm = ({ isAddFormVisible, hideAddForm }: Props) => {
           </Button>
         </Form.Item>
       </Form>
+      {error && <Alert message={error} type='error' />}
     </Modal>
   );
 };

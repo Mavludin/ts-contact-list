@@ -11,11 +11,13 @@ import {
 export type ContactState = {
   list: ContactItem[];
   status: 'idle' | 'loading' | 'failed';
+  error: string | null | undefined;
 };
 
 const initialState: ContactState = {
   list: [],
   status: 'idle',
+  error: '',
 };
 
 export const contactSlice = createSlice({
@@ -32,6 +34,7 @@ export const contactSlice = createSlice({
         state.status = 'idle';
         if (action.payload) {
           state.list = action.payload;
+          state.error = '';
         }
       })
       .addCase(fetchContacts.rejected, (state) => {
@@ -48,6 +51,7 @@ export const contactSlice = createSlice({
           state.list = state.list.filter(
             (contact) => contact.id !== action.payload
           );
+          state.error = '';
         }
       })
       .addCase(deleteContact.rejected, (state) => {
@@ -62,6 +66,7 @@ export const contactSlice = createSlice({
         state.status = 'idle';
         if (action.payload) {
           state.list = [...state.list, action.payload];
+          state.error = '';
         }
       })
       .addCase(addContact.rejected, (state) => {
@@ -74,21 +79,30 @@ export const contactSlice = createSlice({
       })
       .addCase(editContact.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.list = state.list.map((contact) => {
-          if (contact.id === action.payload.id) {
-            return action.payload;
-          }
+        if (action.payload) {
+          state.list = state.list.map((contact) => {
+            if (contact.id === action.payload.id) {
+              return action.payload;
+            }
 
-          return contact;
-        });
+            return contact;
+          });
+          state.error = '';
+        }
       })
-      .addCase(editContact.rejected, (state) => {
+      .addCase(editContact.rejected, (state, action) => {
         state.status = 'failed';
+        if (action.payload) {
+          state.error = action.payload;
+        } else {
+          state.error = action.error.message;
+        }
       });
   },
 });
 
 export const selectContactList = (state: RootState) => state.contact.list;
 export const selectContactStatus = (state: RootState) => state.contact.status;
+export const selectContactError = (state: RootState) => state.contact.error;
 
 export default contactSlice.reducer;
