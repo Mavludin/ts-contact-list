@@ -1,15 +1,13 @@
 import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { Form, Modal, Input, Button, Alert } from 'antd';
+import { useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
   ContactItem,
   editContact,
 } from '../../../store/slices/contact/contactApi';
-import {
-  selectContactError,
-  selectContactStatus,
-} from '../../../store/slices/contact/contactSlice';
+import { selectContactStatus } from '../../../store/slices/contact/contactSlice';
 
 type EditFormValues = {
   name: string;
@@ -27,16 +25,18 @@ export const EditForm = ({
   hideEditForm,
   selectedContact,
 }: Props) => {
-  const status = useAppSelector(selectContactStatus);
-  const error = useAppSelector(selectContactError);
   const dispatch = useAppDispatch();
+
+  const [error, setError] = useState('');
+  const status = useAppSelector(selectContactStatus);
 
   const onFinish = async ({ name, phone }: EditFormValues) => {
     if (!selectedContact) return;
 
     await dispatch(editContact({ ...selectedContact, name, phone }))
       .unwrap()
-      .then(hideEditForm);
+      .then(hideEditForm)
+      .catch((err) => setError(err));
   };
 
   return (

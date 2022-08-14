@@ -46,7 +46,7 @@ export const addContact = createAsyncThunk<
   { name: string; phone: string },
   { rejectValue: string }
 >('contact/addContact', async (newContact, { rejectWithValue }) => {
-  const response = await fetch(CONTACTS_URL + '123', {
+  const response = await fetch(CONTACTS_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

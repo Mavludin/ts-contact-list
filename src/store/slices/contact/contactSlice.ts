@@ -37,13 +37,8 @@ export const contactSlice = createSlice({
           state.error = '';
         }
       })
-      .addCase(fetchContacts.rejected, (state, action) => {
+      .addCase(fetchContacts.rejected, (state) => {
         state.status = 'failed';
-        if (action.payload) {
-          state.error = action.payload;
-        } else {
-          state.error = action.error.message;
-        }
       })
 
       // cases for deleting a single contact
@@ -59,13 +54,8 @@ export const contactSlice = createSlice({
           state.error = '';
         }
       })
-      .addCase(deleteContact.rejected, (state, action) => {
+      .addCase(deleteContact.rejected, (state) => {
         state.status = 'failed';
-        if (action.payload) {
-          state.error = action.payload;
-        } else {
-          state.error = action.error.message;
-        }
       })
 
       // cases for addings a single contact
@@ -79,13 +69,8 @@ export const contactSlice = createSlice({
           state.error = '';
         }
       })
-      .addCase(addContact.rejected, (state, action) => {
+      .addCase(addContact.rejected, (state) => {
         state.status = 'failed';
-        if (action.payload) {
-          state.error = action.payload;
-        } else {
-          state.error = action.error.message;
-        }
       })
 
       // cases for editing a single contact
@@ -105,19 +90,13 @@ export const contactSlice = createSlice({
           state.error = '';
         }
       })
-      .addCase(editContact.rejected, (state, action) => {
+      .addCase(editContact.rejected, (state) => {
         state.status = 'failed';
-        if (action.payload) {
-          state.error = action.payload;
-        } else {
-          state.error = action.error.message;
-        }
       });
   },
 });
 
 export const selectContactList = (state: RootState) => state.contact.list;
 export const selectContactStatus = (state: RootState) => state.contact.status;
-export const selectContactError = (state: RootState) => state.contact.error;
 
 export default contactSlice.reducer;

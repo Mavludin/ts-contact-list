@@ -22,6 +22,7 @@ type Props = {
   isFiltering: boolean;
   setIsEditFormVisible: (value: boolean) => void;
   setSelectedContact: (value: ContactItem | null) => void;
+  setError: (value: string) => void;
 };
 
 export const ContactList = ({
@@ -29,6 +30,7 @@ export const ContactList = ({
   isFiltering,
   setIsEditFormVisible,
   setSelectedContact,
+  setError,
 }: Props) => {
   const contactList = useAppSelector(selectContactList);
   const status = useAppSelector(selectContactStatus);
@@ -46,7 +48,10 @@ export const ContactList = ({
       icon: <ExclamationCircleOutlined />,
       content: 'Изменения не обратить вспять!',
       onOk() {
-        dispatch(deleteContact(id));
+        dispatch(deleteContact(id))
+          .unwrap()
+          .then(() => setError(''))
+          .catch((err) => setError(err));
       },
       onCancel() {},
       cancelText: 'Отмена',

@@ -2,7 +2,7 @@ import { Alert, Button } from 'antd';
 import { useEffect, useState } from 'react';
 import { Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { selectContactError, selectContactList } from '../../store/slices/contact/contactSlice';
+import { selectContactList } from '../../store/slices/contact/contactSlice';
 import { AddForm } from './AddForm/AddForm';
 import { EditForm } from './EditForm/EditForm';
 import { SearchForm } from './SearchForm/SearchForm';
@@ -18,6 +18,8 @@ import s from './Contacts.module.css';
 const { Title } = Typography;
 
 export const Contacts = () => {
+  const [error, setError] = useState('');
+
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
   const [selectedContact, setSelectedContact] = useState<ContactItem | null>(
@@ -25,7 +27,6 @@ export const Contacts = () => {
   );
 
   const contactList = useAppSelector(selectContactList);
-  const error = useAppSelector(selectContactError);
   const [filteredList, setFiltered] = useState<ContactItem[]>(contactList);
   const [isFiltering, setIsFiltering] = useState(false);
 
@@ -37,19 +38,25 @@ export const Contacts = () => {
   const hideEditForm = () => setIsEditFormVisible(false);
 
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(fetchContacts())
+      .unwrap()
+      .then(() => setError(''))
+      .catch((err) => setError(err));
   }, [dispatch]);
 
   return (
     <div className={s.contactList}>
       <Title>Список контактов</Title>
       <SearchForm setFiltered={setFiltered} setIsFiltering={setIsFiltering} />
-      {error && <Alert style={{ marginBottom: '20px' }} message={error} type='error' />}
+      {error && (
+        <Alert style={{ marginBottom: '20px' }} message={error} type='error' />
+      )}
       <ContactList
         filteredList={filteredList}
         isFiltering={isFiltering}
         setIsEditFormVisible={setIsEditFormVisible}
         setSelectedContact={setSelectedContact}
+        setError={setError}
       />
 
       <Button
