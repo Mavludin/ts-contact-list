@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { Avatar, Button, List, Modal } from 'antd';
 
 import {
@@ -30,17 +31,17 @@ export const ContactList = ({
   setSelectedContact,
   setError,
 }: Props) => {
+  const dispatch = useAppDispatch();
+
   const contactList = useAppSelector(selectContactList);
   const status = useAppSelector(selectContactStatus);
 
-  const dispatch = useAppDispatch();
-
-  const showEditForm = (contactItem: ContactItem) => {
+  const showEditForm = useCallback((contactItem: ContactItem) => {
     setIsEditFormVisible(true);
     setSelectedContact(contactItem);
-  };
+  }, [setIsEditFormVisible, setSelectedContact]);
 
-  const handleDeletion = (id: string) => {
+  const handleDeletion = useCallback((id: string) => {
     confirm({
       title: 'Вы уверены?',
       icon: <ExclamationCircleOutlined />,
@@ -49,13 +50,13 @@ export const ContactList = ({
         dispatch(deleteContact(id))
           .unwrap()
           .then(() => setError(''))
-          .catch((err) => setError(err));
+          .catch((err: string) => setError(err));
       },
       onCancel() {},
       cancelText: 'Отмена',
       okText: 'Да',
     });
-  };
+  }, [dispatch, setError]);
 
   return (
     <List
@@ -63,7 +64,7 @@ export const ContactList = ({
       itemLayout='horizontal'
       dataSource={filteredList ? filteredList : contactList}
       loading={status === 'loading'}
-      renderItem={(contact) => (
+      renderItem={(contact: ContactItem) => (
         <List.Item
           actions={[
             <Button

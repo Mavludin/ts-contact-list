@@ -12,6 +12,7 @@ import {
 import { fetchUsers } from '../../store/slices/user/userApi';
 
 import s from './Login.module.css';
+import { useCallback } from 'react';
 
 const { Title } = Typography;
 
@@ -26,15 +27,15 @@ export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const onFinish = async ({ userName }: LoginValues) => {
+  const onFinish = useCallback(async ({ userName }: LoginValues) => {
     const isUserFound = await dispatch(fetchUsers(userName)).unwrap();
 
     if (isUserFound) {
       dispatch(logIn());
       navigate(Endpoints.Contacts);
     }
-  };
-
+  }, [dispatch, navigate]);
+  
   return (
     <Form
       className={s.loginForm}

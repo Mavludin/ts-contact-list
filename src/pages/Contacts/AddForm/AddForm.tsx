@@ -1,6 +1,6 @@
 import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { Form, Modal, Input, Button, Alert } from 'antd';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { addContact } from '../../../store/slices/contact/contactApi';
@@ -17,16 +17,17 @@ type Props = {
 };
 
 export const AddForm = ({ isAddFormVisible, hideAddForm }: Props) => {
-  const [error, setError] = useState('');
-  const status = useAppSelector(selectContactStatus);
   const dispatch = useAppDispatch();
 
-  const onFinish = async ({ name, phone }: AddFormValues) => {
+  const [error, setError] = useState('');
+  const status = useAppSelector(selectContactStatus);
+
+  const onFinish = useCallback(async ({ name, phone }: AddFormValues) => {
     await dispatch(addContact({ name, phone }))
       .unwrap()
       .then(hideAddForm)
-      .catch((err) => setError(err));
-  };
+      .catch((err: string) => setError(err));
+  }, [dispatch, hideAddForm]);
 
   return (
     <Modal

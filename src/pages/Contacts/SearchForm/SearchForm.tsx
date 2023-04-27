@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { Form, Input } from 'antd';
 import { useAppSelector } from '../../../store/hooks';
 import { ContactItem } from '../../../store/slices/contact/contactApi';
@@ -14,11 +15,11 @@ type Props = {
 export const SearchForm = ({ setFilteredList }: Props) => {
   const contactList = useAppSelector(selectContactList);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value.toLocaleLowerCase();
 
     if (searchValue) {
-      const filteredResult = contactList.filter((contact) => {
+      const filteredResult = contactList.filter((contact: ContactItem) => {
         return (
           contact.name.toLowerCase().includes(searchValue) ||
           contact.phone.toLowerCase().includes(searchValue)
@@ -29,8 +30,8 @@ export const SearchForm = ({ setFilteredList }: Props) => {
     } else {
       setFilteredList(null);
     }
-  };
-
+  }, [contactList, setFilteredList]);
+  
   return (
     <Form>
       <Search

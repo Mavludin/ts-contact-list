@@ -16,6 +16,8 @@ import s from './Contacts.module.css';
 const { Title } = Typography;
 
 export const Contacts = () => {
+  const dispatch = useAppDispatch();
+
   const [error, setError] = useState('');
 
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
@@ -26,18 +28,15 @@ export const Contacts = () => {
 
   const [filteredList, setFilteredList] = useState<ContactItem[] | null>(null);
 
-  const dispatch = useAppDispatch();
-
   const showAddForm = () => setIsAddFormVisible(true);
   const hideAddForm = () => setIsAddFormVisible(false);
-
   const hideEditForm = () => setIsEditFormVisible(false);
 
   useEffect(() => {
     dispatch(fetchContacts())
       .unwrap()
       .then(() => setError(''))
-      .catch((err) => setError(err));
+      .catch((err: string) => setError(err));
   }, [dispatch]);
 
   return (

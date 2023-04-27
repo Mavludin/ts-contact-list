@@ -1,6 +1,6 @@
 import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { Form, Modal, Input, Button, Alert } from 'antd';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
@@ -30,14 +30,14 @@ export const EditForm = ({
   const [error, setError] = useState('');
   const status = useAppSelector(selectContactStatus);
 
-  const onFinish = async ({ name, phone }: EditFormValues) => {
+  const onFinish = useCallback(async ({ name, phone }: EditFormValues) => {
     if (!selectedContact) return;
 
     await dispatch(editContact({ ...selectedContact, name, phone }))
       .unwrap()
       .then(hideEditForm)
-      .catch((err) => setError(err));
-  };
+      .catch((err: string) => setError(err));
+  }, [dispatch, hideEditForm, selectedContact]);
 
   return (
     <Modal
